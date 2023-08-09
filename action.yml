@@ -14,17 +14,19 @@ runs:
         branch: 'master'
     - uses: actions/setup-python@v2
       with:
-        python-version: '3.8'
+        python-version: '3.x'
 
     - run: pipx install virtualenv
       shell: bash
 
-    - name: Install pyyaml
-      run: pip install pyyaml==5.3.1
+    - name: Install latest EB CLI version
+      if: "${{ inputs.version == '' }}"
+      run: python $GITHUB_WORKSPACE/aws-elastic-beanstalk-cli-setup/scripts/ebcli_installer.py
       shell: bash
 
-    - name: Install EB CLI Upgrade
-      run: pip install awsebcli --upgrade
+    - name: Install specific EB CLI version
+      if: "${{ inputs.version != '' }}"
+      run: python $GITHUB_WORKSPACE/aws-elastic-beanstalk-cli-setup/scripts/ebcli_installer.py --version ${{ inputs.version }}
       shell: bash
 
     - run: echo "~/.ebcli-virtual-env/executables" >> $GITHUB_PATH
