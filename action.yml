@@ -19,6 +19,9 @@ runs:
     - run: pipx install virtualenv
       shell: bash
 
+    - run: pip install "cython<3.0.0" wheel && pip install pyyaml==5.4.1 --no-build-isolation
+      shell: bash
+
     - name: Install latest EB CLI version
       if: "${{ inputs.version == '' }}"
       run: python $GITHUB_WORKSPACE/aws-elastic-beanstalk-cli-setup/scripts/ebcli_installer.py
